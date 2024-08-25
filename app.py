@@ -1,13 +1,14 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-
-app = Flask(__name__)
-CORS(app)  # Enable CORS
-
 @app.route('/bfhl', methods=['POST'])
 def process_data():
     try:
-        data = request.json.get('data', [])
+        request_data = request.json
+        if not request_data or 'data' not in request_data:
+            raise ValueError("Missing 'data' field in request")
+
+        data = request_data['data']
+        if not isinstance(data, list):
+            raise ValueError("'data' should be a list")
+
         numbers = [item for item in data if item.isdigit()]
         alphabets = [item for item in data if item.isalpha()]
         lowercase_alphabets = [item for item in alphabets if item.islower()]
@@ -24,10 +25,3 @@ def process_data():
         return jsonify(response), 200
     except Exception as e:
         return jsonify({"is_success": False, "error": str(e)}), 400
-
-@app.route('/bfhl', methods=['GET'])
-def get_operation_code():
-    return jsonify({"operation_code": 1}), 200
-
-if __name__ == '__main__':
-    app.run(debug=True)
