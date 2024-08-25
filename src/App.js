@@ -19,7 +19,7 @@ function App() {
         throw new Error('Invalid JSON format. Please use standard double quotes.');
       }
 
-      const response = await fetch('https://21brs1148jsoneditor.netlify.app/bfhl', {
+      const response = await fetch('https://21brs1148newjsoneditor.netlify.app/bfhl', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
